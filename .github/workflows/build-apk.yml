@@ -27,16 +27,17 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --only-binary=:all: -r requirements.txt
+          pip install flet pandas openpyxl numpy==1.26.4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Build APK via Flet
+      - name: Build APK via Flet (Forced Binaries)
         run: |
-          flet build apk --verbose
+          # On passe l'argument de build pip pour interdire la compilation de sources natives
+          flet build apk --pip-args "--only-binary=:all:" --verbose
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
