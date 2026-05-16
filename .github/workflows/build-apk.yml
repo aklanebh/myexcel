@@ -6,6 +6,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Forces the runner to use Node.js 24 to completely clear the deprecation warning
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -13,7 +17,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12' # Forces a stable Python version!
+          python-version: '3.12'
 
       - name: Install Flet and Dependencies
         run: |
