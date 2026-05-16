@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      # ARMURE PIP : Interdiction globale et absolue de compiler des paquets depuis les sources
+      PIP_ONLY_BINARY: ":all:"
 
     steps:
       - name: Checkout code
@@ -22,7 +24,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11' # Version de référence la plus stable pour Flet mobile
+          python-version: '3.11'
 
       - name: Install Dependencies
         run: |
@@ -34,10 +36,10 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Build APK via Flet (Forced Binaries)
+      - name: Build APK via Flet
         run: |
-          # On passe l'argument de build pip pour interdire la compilation de sources natives
-          flet build apk --pip-args "--only-binary=:all:" --verbose
+          # Nettoyé de tout argument problématique
+          flet build apk --verbose
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
